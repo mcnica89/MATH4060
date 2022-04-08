@@ -156,10 +156,10 @@ def calculate_runnerDicePairArray():
 
 #DiceArray tests
 DicePairArray = calculate_runnerDicePairArray()
-print(jnp.shape(DicePairArray))
-N=diceRoll_to_diceNum([1,2,3,6])
-print(diceNum_to_diceRoll(N))
-print(DicePairArray[:,:,N])
+#print(jnp.shape(DicePairArray))
+#N=diceRoll_to_diceNum([1,2,3,6])
+#print(diceNum_to_diceRoll(N))
+#print(DicePairArray[:,:,N])
 
 """## Helper functions for dealing with runners"""
 
