@@ -556,7 +556,7 @@ pure_random_AI_vmap = jax.jit(jax.vmap( pure_random_AI, in_axes=(None,2,2,1,0), 
 
 """## Making the game simulation parrallel"""
 
-def simulate_game_parr(Player_AI, Verbose = False, random_key=None, Starting_Player=0, N_PARR=100, N_PLAYERS=2, N_COL_TO_WIN=5, N_MAX_RUNNERS=3, PLAYER_COL_STATE_INIT=[3,5,7,9,11,13,11,9,7,5,3]):
+def simulate_game_parr(Player_AI, Verbose = False, random_key=None, Starting_Player=0, N_PARR=100, N_PLAYERS=2, N_COL_TO_WIN=5, N_MAX_RUNNERS=3, PLAYER_COL_STATE_INIT=None):
   '''Run a simulation of the game Can't Stop! running N_PARR games in parrallel'''
   #Note that the TURN order for all the games is the same, so who is the starting player matters! 
 
@@ -568,7 +568,11 @@ def simulate_game_parr(Player_AI, Verbose = False, random_key=None, Starting_Pla
   #  An array of shape (N_players,) with a 1 at the player who won
   
   #Initialize game state
-  player_col_state = jnp.tile(jnp.array(PLAYER_COL_STATE_INIT,dtype=jnp.dtype('i1')),(N_PARR, N_PLAYERS, 1))
+  if PLAYER_COL_STATE_INIT == None:
+    player_col_state = jnp.tile(jnp.array([3,5,7,9,11,13,11,9,7,5,3],dtype=jnp.dtype('i1')),(N_PARR, N_PLAYERS, 1))
+  else:
+    player_col_state = jnp.tile( PLAYER_COL_STATE_INIT, (N_PARR, 1, 1))  
+  
   player_col_state = jnp.transpose(player_col_state, (1,2,0)) #Move it so the N_PARR dimension is LAST
   
   if random_key == None:
